@@ -5,7 +5,7 @@ dotenv.config({
 })
 
 import { appConfig } from './app.js'
-import { mongoConfig, redisConfiq, mailer } from './configs/index.js'
+import { mongoConfig, redisConfiq, mailer, initializeQueues } from './configs/index.js'
 
 const startServer = (port) => {
   const server = appConfig.listen(port, () => {
@@ -21,6 +21,7 @@ const startServer = (port) => {
         .connect()
         .then(() => {
           console.log('\n\tConnected to Redis')
+          initializeQueues()
         })
         .catch((err) => {
           console.error('\n\tFailed to connect to Redis:', err)

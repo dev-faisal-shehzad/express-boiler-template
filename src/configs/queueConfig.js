@@ -1,7 +1,9 @@
-import { Queue, QueueScheduler } from 'bullmq'
+import pkg from 'bullmq'
 import queueList from './queues.js'
 import scheduleList from './schedules.js'
 import redisConfig from './redisConfig.js'
+
+const { Queue, QueueScheduler } = pkg
 
 const queues = {}
 
@@ -23,9 +25,9 @@ export const initializeQueues = () => {
       defaultJobOptions: queueConfig.defaultJobOptions
     })
 
-    if (queueConfig.scheduler) {
-      new QueueScheduler(queueConfig.queueName, { connection: redisConfig })
-    }
+    // if (queueConfig.scheduler) {
+    //   new QueueScheduler(queueConfig.queueName, { connection: redisConfig })
+    // }
   })
 }
 

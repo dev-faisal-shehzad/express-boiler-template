@@ -1,5 +1,3 @@
-import workers from '../workers'
-
 const scheduleList = [
   {
     queueName: 'mailerQueue',
