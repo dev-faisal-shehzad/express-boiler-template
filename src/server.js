@@ -5,20 +5,27 @@ dotenv.config({
 })
 
 import { appConfig} from "./app.js"
-import { mongoConfig, redisConfiq } from "./configs/index.js"
+import { mongoConfig, redisConfiq, mailer } from "./configs/index.js"
 
 const startServer = (port) => {
   const server = appConfig.listen(port, () => {
     console.log(`\n\tServer running at http://${process.env.HOST}:${port}\n`)
 
-    redisConfiq.connect().then(() => {
-      console.log("\n\tConnected to Redis")
-      })
-      .catch((err) => {
-        console.error("\n\tFailed to connect to Redis:", err)
-        process.exit(1)
-      })
-  })
+    mailer.verify(function (error, success) {
+      if (error) {
+        console.log(error)
+      } else {
+        console.log(`\n\tMail server is running on port ${process.env.MAILER_PORT}\n`)
+      }
+      redisConfiq.connect().then(() => {
+        console.log("\n\tConnected to Redis")
+        })
+        .catch((err) => {
+          console.error("\n\tFailed to connect to Redis:", err)
+          process.exit(1)
+        })
+    })
+    })
 
   server.on("error", (err) => {
     if (err.code === "EADDRINUSE") {

@@ -17,7 +17,7 @@ const mailer = nodemailer.createTransport({
     user: process.env.MAILER_USERNAME,
     pass: process.env.MAILER_PASSWORD
   },
-  debug: process.env.MAILER_DEBUGGER === 'true' || false,
+  debug: true,
   logger: true,
   tls: { rejectUnauthorized: false }
 })
