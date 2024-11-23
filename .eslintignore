@@ -3,6 +3,15 @@ node_modules
 .github
 .git
 .env
+
+.env.docker
+.env.sample
+.dockerignore
+.prettierignore
+.prettier
+.eslintignore
+.eslintrc.json
+
 .vscode
 README.md
 package.json

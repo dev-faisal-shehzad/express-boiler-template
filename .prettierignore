@@ -6,6 +6,14 @@ docs/**
 logs/**
 temp/**
 
+.env.docker
+.env.sample
+.dockerignore
+.prettierignore
+.prettier
+.eslintignore
+.eslintrc.json
+
 README.md
 package.json
 package-lock.json
