@@ -2,6 +2,9 @@
 /node_modules
 ./dist
 /.github
+docs/**
+logs/**
+temp/**
 
 *.env
 .env
