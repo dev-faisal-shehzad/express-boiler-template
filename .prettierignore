@@ -6,6 +6,10 @@ docs/**
 logs/**
 temp/**
 
+README.md
+package.json
+package-lock.json
+
 *.env
 .env
 .env.*

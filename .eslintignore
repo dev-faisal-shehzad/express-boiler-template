@@ -4,6 +4,10 @@ node_modules
 .git
 .env
 .vscode
+README.md
+package.json
+package-lock.json
+
 public
 docs/**
 logs/**
