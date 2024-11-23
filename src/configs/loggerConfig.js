@@ -26,7 +26,7 @@ const cleanOldDevLogs = async () => {
       files.map(async (file) => {
         const filePath = path.join(directoryPath, file)
         const stats = await fs.promises.stat(filePath)
-        
+
         if (now - stats.mtimeMs > 24 * 60 * 60 * 1000) {
           await fs.promises.unlink(filePath)
         }
@@ -43,7 +43,10 @@ const customFormat = winston.format.printf(({ level, message }) => {
 
 const logger = winston.createLogger({
   level: NODE_ENV === 'development' ? 'debug' : 'info',
-  format: winston.format.combine(NODE_ENV !== 'development' ? winston.format.timestamp() : winston.format.uncolorize(), customFormat),
+  format: winston.format.combine(
+    NODE_ENV !== 'development' ? winston.format.timestamp() : winston.format.uncolorize(),
+    customFormat
+  ),
   transports: [
     new winston.transports.Console({
       level: NODE_ENV === 'development' ? 'debug' : 'warn',
