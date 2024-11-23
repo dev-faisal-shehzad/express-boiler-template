@@ -8,7 +8,7 @@ const directoryPath = rootFilePath('logs')
 const NODE_ENV = process.env.NODE_ENV || 'development'
 
 const dailyRotateFileTransport = new winston.transports.DailyRotateFile({
-  filename: rootFilePath('logs/app-%DATE%.log'),
+  filename: rootFilePath(`logs/app-%DATE%.${NODE_ENV}.log`),
   datePattern: 'YYYY-MM-DD',
   zippedArchive: true,
   maxSize: '20m', // Rotate when the file size exceeds 20 MB
@@ -17,23 +17,33 @@ const dailyRotateFileTransport = new winston.transports.DailyRotateFile({
   handleRejections: true
 })
 
-const cleanDevLogs = async () => {
+const cleanOldDevLogs = async () => {
   if (NODE_ENV === 'development' && fs.existsSync(directoryPath)) {
     const files = await fs.promises.readdir(directoryPath)
+    const now = Date.now()
+
     await Promise.all(
-      files.filter((file) => file.includes('dev')).map((file) => fs.promises.unlink(path.join(directoryPath, file)))
+      files.map(async (file) => {
+        const filePath = path.join(directoryPath, file)
+        const stats = await fs.promises.stat(filePath)
+        
+        if (now - stats.mtimeMs > 24 * 60 * 60 * 1000) {
+          await fs.promises.unlink(filePath)
+        }
+      })
     )
   }
 }
-cleanDevLogs()
 
-const customFormat = winston.format.printf(({ level, message, timestamp, stack }) => {
-  return `${timestamp} ${level.toUpperCase()}: ${message} ${stack ? `\nStack: ${stack}` : ''}`
+cleanOldDevLogs()
+
+const customFormat = winston.format.printf(({ level, message }) => {
+  return `${level.toUpperCase()}: ${message}`
 })
 
 const logger = winston.createLogger({
   level: NODE_ENV === 'development' ? 'debug' : 'info',
-  format: winston.format.combine(winston.format.timestamp(), customFormat),
+  format: winston.format.combine(NODE_ENV !== 'development' ? winston.format.timestamp() : winston.format.uncolorize(), customFormat),
   transports: [
     new winston.transports.Console({
       level: NODE_ENV === 'development' ? 'debug' : 'warn',

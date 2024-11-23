@@ -3,8 +3,9 @@ import cors from "cors"
 import cookieParser from "cookie-parser"
 import { corsConfig } from "./configs/index.js"
 
-const appConfig = express()
+import './configs/consoleConfig.js'
 
+const appConfig = express()
 
 // cors configuration
 appConfig.use(cors(corsConfig))
