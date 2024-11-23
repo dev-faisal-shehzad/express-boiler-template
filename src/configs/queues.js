@@ -18,11 +18,13 @@ const queueList = [
   {
     queueName: 'defaultQueue',
     limiter: defaultLimiter,
+    scheduler: true,
     defaultJobOptions: defaultJobOptions
   },
   {
     queueName: 'mailertQueue',
     limiter: defaultLimiter,
+    scheduler: true,
     defaultJobOptions: defaultJobOptions
   }
 ]
