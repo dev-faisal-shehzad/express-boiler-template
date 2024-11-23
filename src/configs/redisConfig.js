@@ -6,16 +6,29 @@ const redisConfiq = new Redis({
   password: process.env.REDIS_PASSWORD || null
 })
 
+let isRedisConnected = false;
+
 redisConfiq.on('error', (err) => {
+  isRedisConnected = false;
   console.error('\n\tRedis connection error : ', err)
 })
-
-redisConfiq.on('reconnecting', () => {
-  console.log('\n\tReconnecting to Redis...')
-})
-
 redisConfiq.on('connect', () => {
+  isRedisConnected = true;
   console.log('\n\tConnected to Redis')
 })
+
+redisConfiq.connect = async () => {
+  if (isRedisConnected) {
+    console.log("\n\tRedis is already connected.");
+    return;
+  }
+
+  try {
+    await redisConfiq.connect();
+  } catch (error) {
+    console.error("\n\tError connecting to Redis:", error.message);
+    process.exit(1);
+  }
+};
 
 export default redisConfiq
