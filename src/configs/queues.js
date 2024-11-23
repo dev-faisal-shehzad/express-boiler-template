@@ -1,12 +1,12 @@
 const defaultJobOptions = {
-  attempts: 5,          // Retry up to 5 times if a job fails
+  attempts: 5, // Retry up to 5 times if a job fails
   priority: 1,
-  backoff: 5000,        // Wait 5 seconds between retries
+  backoff: 5000, // Wait 5 seconds between retries
   removeOnComplete: {
     age: 3600, // keep up to 1 hour
-    count: 1000, // keep up to 1000 jobs
+    count: 1000 // keep up to 1000 jobs
   },
-  removeOnFail: false,
+  removeOnFail: false
 }
 
 const defaultLimiter = {
