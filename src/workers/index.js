@@ -1,10 +1,13 @@
-import mailerWorker from './mailerWorker'
-export default async (job) => {
-  const workerName = job.type.split('-')[0]
 
-  console.log(`\n\t------- ${job.data} -------\n`)
+export default async (job) => {
+  const workerName = job.name.split('-')[1]
+
+  console.log(`\t${job.id}`)
+  console.log(`\t${job.name}`)
+  console.log(`\n\n\n\t\t------- ${JSON.stringify(job.data, null, 1)} -------\n`);
   if (workerName === 'mailer') {
     // mailerWorker(job)
+    console.log('yo')
   }
   return true
 }

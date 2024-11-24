@@ -5,29 +5,41 @@ dotenv.config({
 })
 
 import { appConfig } from './app.js'
-import { mongoConfig, redisConfiq, mailer, initializeQueues } from './configs/index.js'
+import { mongoConfig, redisConfiq, mailer, initializeQueues, initializeWorkers } from './configs/index.js'
+import { addJobToQueue } from './configs/index.js'
 
-const startServer = (port) => {
+const startServer = async (port) => {
+  try {
+    await redisConfiq.connect();
+    console.log('\n\tConnected to Redis');
+
+    await initializeQueues();
+    console.log('Queues initialized successfully.');
+
+    await initializeWorkers();
+    console.log('Workers initialized successfully.');
+
+    await addJobToQueue('msg-mailer', { type: 'haha' });
+    console.log('Job added to queue successfully.');
+  }
+  catch (err) {
+    console.error('\n\tError during strting:', err.message)
+    process.exit(1)
+  }
+
   const server = appConfig.listen(port, () => {
     console.log(`\n\tServer running at http://${process.env.HOST}:${port}\n`)
 
-    mailer.verify(function (error, success) {
-      if (error) {
-        console.log(error)
-      } else {
-        console.log(`\n\tMail server is running on port ${process.env.MAILER_PORT}\n`)
-      }
-      redisConfiq
-        .connect()
-        .then(() => {
-          console.log('\n\tConnected to Redis')
-          initializeQueues()
-        })
-        .catch((err) => {
-          console.error('\n\tFailed to connect to Redis:', err)
-          process.exit(1)
-        })
-    })
+
+  
+
+    // mailer.verify(function (error, success) {
+    //   if (error) {
+    //     console.log(error)
+    //   } else {
+    //     console.log(`\n\tMail server is running on port ${process.env.MAILER_PORT}\n`)
+    //   }
+    // })
   })
 
   server.on('error', (err) => {

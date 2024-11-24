@@ -1,4 +1,5 @@
-import redisConfiq from './redisConfig'
+import path from 'path'
+import redisConfiq from './redisConfig.js'
 
 const defaultWorkerOptions = {
   connection: redisConfiq,
@@ -12,12 +13,12 @@ const defaultWorkerOptions = {
 const workerList = [
   {
     queueName: 'defaultQueue',
-    processor: './index.js',
+    processor: path.resolve('./src/workers/index.js'),
     configuration: defaultWorkerOptions
   },
   {
     queueName: 'mailertQueue',
-    processor: './mailerWorker.js',
+    processor: path.resolve('./src/workers/index.js'),
     configuration: defaultWorkerOptions
   }
 ]

@@ -17,13 +17,18 @@ const defaultJobOptions = {
   },
   removeOnFail: false
 }
+
 export const initializeQueues = () => {
   queueList.forEach((queueConfig) => {
-    queues[queueConfig.name] = new Queue(queueConfig.queueName, {
-      connection: redisConfig,
-      limiter: queueConfig.limiter,
-      defaultJobOptions: queueConfig.defaultJobOptions
-    })
+    try {
+      queues[queueConfig.queueName] = new Queue(queueConfig.queueName, {
+        connection: redisConfig,
+        limiter: queueConfig.limiter,
+        defaultJobOptions: queueConfig.defaultJobOptions
+      })
+    } catch (error) {
+      console.error('Error during queue initialization : ', error.message, error.stack);
+    }
 
     // if (queueConfig.scheduler) {
     //   new QueueScheduler(queueConfig.queueName, { connection: redisConfig })
@@ -36,8 +41,7 @@ export const addJobToQueue = async (
   jobData,
   cronExpression = null,
   jobOptions = {},
-  queueName = 'defaultQueue',
-  workerName = 'defaultWorker'
+  queueName = 'defaultQueue'
 ) => {
   if (!queues[queueName]) {
     throw new Error(`Queue "${queueName}" is not initialized`)
@@ -49,11 +53,15 @@ export const addJobToQueue = async (
     finalOptions = { ...finalOptions, repeat: { cron: cronExpression } }
   }
 
-  await queue.add(workerName + '-' + jobName, jobData, finalOptions)
+  try {
+    await queue.add(jobName, jobData, finalOptions)
+  } catch (error) {
+    console.error('Error during job enqueuing :', error.message, error.stack);
+  }
 }
 
 export const initializeScheduledJobs = () => {
   scheduleList.forEach((schedule) => {
-    addJobToQueue(schedule.jobName, schedule.jobData, schedule.cronExpression, {}, schedule.queueName, schedule.workerName)
+    addJobToQueue(schedule.jobName + '-' + schedule.workerName, schedule.jobData, schedule.cronExpression, {}, schedule.queueName)
   })
 }
