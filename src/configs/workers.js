@@ -10,7 +10,7 @@ const defaultWorkerOptions = {
   },
   useWorkerThreads: true // Enabling worker threads for better parallel job processing
 }
-const workerList = [
+const workers = [
   {
     queueName: 'defaultQueue',
     processor: path.resolve('./src/workers/index.js'),
@@ -23,4 +23,4 @@ const workerList = [
   }
 ]
 
-export default workerList
+export default workers

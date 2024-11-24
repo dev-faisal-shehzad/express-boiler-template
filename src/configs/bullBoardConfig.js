@@ -1,5 +1,5 @@
 import basicAuth from 'express-basic-auth';
-import { queues } from './queueConfig.js'
+import { bullMQQueues } from './bullMQConfig.js'
 import { createBullBoard } from "@bull-board/api"
 import { ExpressAdapter } from "@bull-board/express"
 import { BullMQAdapter } from "@bull-board/api/bullMQAdapter.js"
@@ -7,10 +7,10 @@ import { BullMQAdapter } from "@bull-board/api/bullMQAdapter.js"
 const serverAdapter = new ExpressAdapter();
 
 const setupBullBoard = async (appConfig) => {
-    const bullQueues = Object.values(queues).map(queue => new BullMQAdapter(queue));
+    const bullMQAdapterQueues = Object.values(bullMQQueues).map(queue => new BullMQAdapter(queue));
 
     createBullBoard({
-      queues: bullQueues,
+      queues: bullMQAdapterQueues,
       serverAdapter: serverAdapter
     })
   

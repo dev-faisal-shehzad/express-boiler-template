@@ -14,7 +14,7 @@ const defaultLimiter = {
   duration: 10000 // Per 10 seconds
 }
 
-const queueList = [
+const queues = [
   {
     queueName: 'defaultQueue',
     limiter: defaultLimiter,
@@ -29,4 +29,4 @@ const queueList = [
   }
 ]
 
-export default queueList
+export default queues

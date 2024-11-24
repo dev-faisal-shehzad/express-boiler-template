@@ -5,7 +5,7 @@ dotenv.config({
 })
 
 import { appConfig } from './app.js'
-import { mongoConfig, redisConfiq, mailerSetup, initializeQueues, initializeWorkers, initializeScheduledJobs, setupBullBoard } from './configs/index.js'
+import { mongoConfig, redisConfiq, mailerSetup, initializeBullMQQueues, initializeWorkers, initializeScheduledJobs, setupBullBoard } from './configs/index.js'
 import { addJobToQueue } from './configs/index.js'
 
 const startServer = async (port) => {
@@ -13,7 +13,7 @@ const startServer = async (port) => {
     await redisConfiq.connect();
     console.log('\n\tConnected to Redis');
 
-    await initializeQueues();
+    await initializeBullMQQueues();
     console.log('Queues initialized successfully.');
 
     await initializeWorkers();

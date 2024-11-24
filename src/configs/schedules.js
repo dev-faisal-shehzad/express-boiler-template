@@ -1,4 +1,4 @@
-const scheduleList = [
+const schedules = [
   {
     queueName: 'defaultQueue',
     jobName: 'dailyReportJob',
@@ -15,4 +15,4 @@ const scheduleList = [
   }
 ]
 
-export default scheduleList
+export default schedules

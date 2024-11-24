@@ -1,20 +1,20 @@
 import { Worker } from 'bullmq'
-import workerList from './workers.js'
+import workers from './workers.js'
 
 const initializeWorkers = () => {
-  workerList.forEach((workerConfig) => {
+  workers.forEach((worker) => {
     try {
-      const worker = new Worker(workerConfig.queueName, workerConfig.processor, workerConfig.configuration)
+      const activeWorker = new Worker(worker.queueName, worker.processor, worker.configuration)
   
-      worker.on('completed', (job) => {
+      activeWorker.on('completed', (job) => {
         console.log(`Job ${job.id} completed successfully.`)
       })
 
-      worker.on('failed', (job, err) => {
+      activeWorker.on('failed', (job, err) => {
         console.error(`Job ${job.id} failed with error:`, err)
       })
 
-      console.log(`Worker for queue ${workerConfig.queueName} started successfully.`)
+      console.log(`Worker for queue ${worker.queueName} started successfully.`)
 
       process.on('unhandledRejection', (err) => {
         console.error('Unhandled Rejection:', err)
