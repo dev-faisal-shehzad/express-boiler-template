@@ -1,9 +1,9 @@
-import pkg from 'bullmq'
+import bull from 'bullmq'
 import queueList from './queues.js'
 import scheduleList from './schedules.js'
 import redisConfig from './redisConfig.js'
 
-const { Queue, QueueScheduler } = pkg
+const { Queue, JobScheduler } = bull
 
 const queues = {}
 
@@ -30,9 +30,14 @@ export const initializeQueues = () => {
       console.error('Error during queue initialization : ', error.message, error.stack);
     }
 
-    // if (queueConfig.scheduler) {
-    //   new QueueScheduler(queueConfig.queueName, { connection: redisConfig })
-    // }
+    if (queueConfig.scheduler) {
+      try {
+        new JobScheduler(queueConfig.queueName, { connection: redisConfig })
+      }
+      catch (error) {
+        console.error('Error during scheduler initialization : ', error.message, error.stack);
+      }
+    }
   })
 }
 
@@ -48,7 +53,7 @@ export const addJobToQueue = async (
   }
 
   const queue = queues[queueName]
-  const finalOptions = { ...defaultJobOptions, ...jobOptions }
+  let finalOptions = { ...defaultJobOptions, ...jobOptions }
   if (cronExpression) {
     finalOptions = { ...finalOptions, repeat: { cron: cronExpression } }
   }

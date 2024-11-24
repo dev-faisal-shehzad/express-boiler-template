@@ -1,17 +1,17 @@
 const scheduleList = [
   {
-    queueName: 'mailerQueue',
+    queueName: 'defaultQueue',
     jobName: 'dailyReportJob',
     workerName: 'defaultWorker',
     jobData: { reportType: 'daily' },
-    cronExpression: '0 8 * * *' // Run every day at 8 AM
+    cronExpression: '58 12 * * *' // Run every day at 12:01 PM
   },
   {
-    queueName: 'mailerQueue',
-    jobName: 'dailyReportJob',
-    workerName: 'mailerWorker',
+    queueName: 'defaultQueue',
+    jobName: 'dailyReportJobs',
+    workerName: 'defaultWorker',
     jobData: { reportType: 'daily' },
-    cronExpression: '0 9 * * *' // Run every day at 9 AM
+    cronExpression: '59 12 * * *' // Run every day at 9 AM
   }
 ]
 
