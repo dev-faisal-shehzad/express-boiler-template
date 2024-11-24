@@ -19,7 +19,7 @@ const setupBullBoard = async (appConfig) => {
   appConfig.use(
     '/bullmq',
     basicAuth({
-      users: { admin: 'admin' },
+      users: { [process.env.BULL_BOARD_USERNAME]: process.env.BULL_BOARD_PASSWORD },
       challenge: true,
       unauthorizedResponse: 'Unauthorized'
     })

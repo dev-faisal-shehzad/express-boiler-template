@@ -18,6 +18,10 @@ export const MAILER_USERNAME = process.env.MAILER_USERNAME || 'user@gmail.com'
 export const MAILER_PASSWORD = process.env.MAILER_PASSWORD || ''
 export const MAILER_DEBUGGER = process.env.MAILER_DEBUGGER || 'true'
 
+// Bull Board Configuration
+export const BULL_BOARD_USERNAME = process.env.BULL_BOARD_USERNAME || 'admin'
+export const BULL_BOARD_PASSWORD = process.env.BULL_BOARD_PASSWORD || 'admin'
+
 // Redis Configuration
 export const REDIS_HOST = process.env.REDIS_HOST || '127.0.0.1'
 export const REDIS_PORT = process.env.REDIS_PORT || 6379
@@ -38,6 +42,8 @@ const ENVS = {
   MAILER_USERNAME,
   MAILER_PASSWORD,
   MAILER_DEBUGGER,
+  BULL_BOARD_USERNAME,
+  BULL_BOARD_PASSWORD,
   REDIS_HOST,
   REDIS_PORT,
   REDIS_PASSWORD
