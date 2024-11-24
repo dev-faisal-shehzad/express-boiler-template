@@ -5,10 +5,6 @@ dotenv.config({
   path: './.env'
 })
 
-if (!process.env.MAILER_HOST || !process.env.MAILER_PORT || !process.env.MAILER_USERNAME || !process.env.MAILER_PASSWORD) {
-  throw new Error('\n\tMissing one or more required environment variables for mailer : HOST, PORT, USERNAME, PASSWORD')
-}
-
 const mailer = nodemailer.createTransport({
   host: process.env.MAILER_HOST,
   port: parseInt(process.env.MAILER_PORT, 10),
@@ -22,4 +18,16 @@ const mailer = nodemailer.createTransport({
   tls: { rejectUnauthorized: false }
 })
 
-export default mailer
+
+const mailerSetup = async () => {
+  mailer.verify(function (error, success) {
+    if (error) {
+      console.log(error)
+      process.exit(1)
+    } else {
+      console.log(`\n\tMail server is running on port ${process.env.MAILER_PORT}\n`)
+    }
+  })
+}
+
+export default mailerSetup

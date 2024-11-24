@@ -5,7 +5,7 @@ dotenv.config({
 })
 
 import { appConfig } from './app.js'
-import { mongoConfig, redisConfiq, mailer, initializeQueues, initializeWorkers, initializeScheduledJobs, setupBullBoard } from './configs/index.js'
+import { mongoConfig, redisConfiq, mailerSetup, initializeQueues, initializeWorkers, initializeScheduledJobs, setupBullBoard } from './configs/index.js'
 import { addJobToQueue } from './configs/index.js'
 
 const startServer = async (port) => {
@@ -26,14 +26,7 @@ const startServer = async (port) => {
 
     await setupBullBoard(appConfig)
 
-    mailer.verify(function (error, success) {
-      if (error) {
-        console.log(error)
-        process.exit(1)
-      } else {
-        console.log(`\n\tMail server is running on port ${process.env.MAILER_PORT}\n`)
-      }
-    })
+    await mailerSetup()
   }
   catch (err) {
     console.error('\n\tError during strting:', err.message)
