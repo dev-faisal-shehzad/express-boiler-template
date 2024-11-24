@@ -1,6 +1,6 @@
 import logger from './loggerConfig.js'
 
-if (process.env.SHOW_LOGGER === 'true') {
+if (process.env.SAVE_LOGS === 'true') {
   const formatArgs = (...args) =>
     args
       .map((arg) =>

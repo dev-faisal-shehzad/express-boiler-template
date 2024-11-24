@@ -34,7 +34,7 @@ const startServer = async (port) => {
   }
 
   const server = appConfig.listen(port, () => {
-    console.log(`\n\tServer running at http://${process.env.HOST}:${port}\n`)
+    console.log(`\n\tServer running at http://${process.env.APP_HOST}:${port}\n`)
   })
 
   server.on('error', (err) => {
