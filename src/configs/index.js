@@ -4,5 +4,6 @@ import corsConfig from './corsConfig.js'
 import mailer from './mailerConfig.js'
 import { initializeQueues, addJobToQueue, initializeScheduledJobs } from './queueConfig.js'
 import initializeWorkers from './workerConfig.js'
+import setupBullBoard from './bullBoardConfig.js'
 
-export { redisConfiq, mongoConfig, corsConfig, mailer, initializeQueues, initializeWorkers, addJobToQueue, initializeScheduledJobs }
+export { redisConfiq, mongoConfig, corsConfig, mailer, initializeQueues, initializeWorkers, addJobToQueue, initializeScheduledJobs, setupBullBoard }

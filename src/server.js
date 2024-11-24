@@ -5,7 +5,7 @@ dotenv.config({
 })
 
 import { appConfig } from './app.js'
-import { mongoConfig, redisConfiq, mailer, initializeQueues, initializeWorkers, initializeScheduledJobs } from './configs/index.js'
+import { mongoConfig, redisConfiq, mailer, initializeQueues, initializeWorkers, initializeScheduledJobs, setupBullBoard } from './configs/index.js'
 import { addJobToQueue } from './configs/index.js'
 
 const startServer = async (port) => {
@@ -23,6 +23,8 @@ const startServer = async (port) => {
     console.log('Job added to queue successfully.');
 
     await initializeScheduledJobs()
+
+    await setupBullBoard(appConfig)
 
     mailer.verify(function (error, success) {
       if (error) {

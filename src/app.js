@@ -2,10 +2,13 @@ import express from 'express'
 import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import { corsConfig } from './configs/index.js'
-
 import './configs/consoleConfig.js'
+import router from './routes/index.js'
 
 const appConfig = express()
+
+
+appConfig.use('/', router)
 
 // cors configuration
 appConfig.use(cors(corsConfig))

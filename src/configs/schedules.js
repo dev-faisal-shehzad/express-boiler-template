@@ -4,7 +4,7 @@ const scheduleList = [
     jobName: 'dailyReportJob',
     workerName: 'defaultWorker',
     jobData: { reportType: 'daily' },
-    cronExpression: '58 12 * * *' // Run every day at 12:01 PM
+    cronExpression: '*/2 * * * *' // Run every day at 12:01 PM
   },
   {
     queueName: 'defaultQueue',

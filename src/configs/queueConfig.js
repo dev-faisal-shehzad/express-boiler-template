@@ -1,11 +1,11 @@
-import bull from 'bullmq'
+import bullmq from 'bullmq'
 import queueList from './queues.js'
 import scheduleList from './schedules.js'
 import redisConfig from './redisConfig.js'
 
-const { Queue, JobScheduler } = bull
+const { Queue, JobScheduler } = bullmq
 
-const queues = {}
+export const queues = {}
 
 const defaultJobOptions = {
   attempts: 5,
@@ -26,6 +26,7 @@ export const initializeQueues = () => {
         limiter: queueConfig.limiter,
         defaultJobOptions: queueConfig.defaultJobOptions
       })
+      console.log(`Queue initialized: ${queueConfig.queueName}`);
     } catch (error) {
       console.error('Error during queue initialization : ', error.message, error.stack);
     }
@@ -39,6 +40,8 @@ export const initializeQueues = () => {
       }
     }
   })
+
+  
 }
 
 export const addJobToQueue = async (
