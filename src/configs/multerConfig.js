@@ -13,11 +13,26 @@ const MAX_SIZE = {
   csvSize: 5 * 1024 * 1024 // 5MB
 }
 
+const ALLOWED_FILETYPES = {
+  image: /\.(jpg|jpeg|png|gif)$/,
+  pdf: /\.pdf$/,
+  video: /\.(mp4|avi|mkv)$/,
+  excel: /\.(xlsx|xls)$/,
+  csv: /\.csv$/,
+  audio: /\.(mp3|wav|ogg)$/
+}
+
+const ensureDirectoryExists = (dir) => {
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true })
+  }
+}
+
 const getStorageConfig = (folderName = '') => {
   const uploadDir = path.join(baseDir, folderName)
   ensureDirectoryExists(uploadDir)
 
-  multer.diskStorage({
+  return multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, uploadDir)
     },
@@ -28,53 +43,50 @@ const getStorageConfig = (folderName = '') => {
 }
 
 const fileFilter = (allowedMimeTypes) => (req, file, cb) => {
-  if (allowedMimeTypes.includes(file.mimetype)) {
+  const extname = path.extname(file.originalname).toLowerCase()
+  const isValid = allowedMimeTypes.test(extname)
+
+  if (isValid) {
     cb(null, true)
   } else {
     cb(new Error(`Invalid file type: ${file.mimetype}`), false)
   }
 }
 
-const ensureDirectoryExists = (dir) => {
-  if (!fs.existsSync(dir)) {
-    fs.mkdirSync(dir, { recursive: true })
-  }
-}
-
 const imageUploader = multer({
   storage: getStorageConfig('images'),
   limits: { fileSize: MAX_SIZE.imageSize },
-  fileFilter: fileFilter(['image/jpeg', 'image/png', 'image/gif'])
+  fileFilter: fileFilter(ALLOWED_FILETYPES.image)
 })
 
 const pdfUploader = multer({
   storage: getStorageConfig('pdfs'),
   limits: { fileSize: MAX_SIZE.pdfSize },
-  fileFilter: fileFilter(['application/pdf'])
+  fileFilter: fileFilter(ALLOWED_FILETYPES.pdf)
 })
 
 const videoUploader = multer({
   storage: getStorageConfig('videos'),
   limits: { fileSize: MAX_SIZE.videoSize },
-  fileFilter: fileFilter(['video/mp4', 'video/mpeg', 'video/quicktime'])
+  fileFilter: fileFilter(ALLOWED_FILETYPES.video)
 })
 
 const excelUploader = multer({
   storage: getStorageConfig('excels'),
   limits: { fileSize: MAX_SIZE.excelSize },
-  fileFilter: fileFilter(['application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/vnd.ms-excel'])
+  fileFilter: fileFilter(ALLOWED_FILETYPES.excel)
 })
 
 const csvUploader = multer({
   storage: getStorageConfig('csvs'),
   limits: { fileSize: MAX_SIZE.csvSize },
-  fileFilter: fileFilter(['text/csv', 'application/csv'])
+  fileFilter: fileFilter(ALLOWED_FILETYPES.csv)
 })
 
 const audioUploader = multer({
   storage: getStorageConfig('audios'),
   limits: { fileSize: MAX_SIZE.audioSize },
-  fileFilter: fileFilter(['audio/mpeg', 'audio/wav', 'audio/ogg'])
+  fileFilter: fileFilter(ALLOWED_FILETYPES.audio)
 })
 
 export { imageUploader, pdfUploader, videoUploader, excelUploader, csvUploader, audioUploader }
