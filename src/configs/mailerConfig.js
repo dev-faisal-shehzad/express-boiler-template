@@ -18,7 +18,6 @@ const mailer = nodemailer.createTransport({
   tls: { rejectUnauthorized: false }
 })
 
-
 const mailerSetup = async () => {
   mailer.verify(function (error, success) {
     if (error) {

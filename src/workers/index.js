@@ -1,4 +1,3 @@
-
 export default async (job) => {
   const workerName = job.name.split('-')[1]
 

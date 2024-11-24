@@ -5,30 +5,37 @@ dotenv.config({
 })
 
 import { appConfig } from './app.js'
-import { mongoConfig, redisConfiq, mailerSetup, initializeBullMQQueues, initializeWorkers, initializeScheduledJobs, setupBullBoard } from './configs/index.js'
+import {
+  mongoConfig,
+  redisConfiq,
+  mailerSetup,
+  initializeBullMQQueues,
+  initializeWorkers,
+  initializeScheduledJobs,
+  setupBullBoard
+} from './configs/index.js'
 import { addJobToQueue } from './configs/index.js'
 
 const startServer = async (port) => {
   try {
-    await redisConfiq.connect();
-    console.log('\n\tConnected to Redis');
+    await redisConfiq.connect()
+    console.log('\n\tConnected to Redis')
 
-    await initializeBullMQQueues();
-    console.log('Queues initialized successfully.');
+    await initializeBullMQQueues()
+    console.log('Queues initialized successfully.')
 
-    await initializeWorkers();
-    console.log('Workers initialized successfully.');
+    await initializeWorkers()
+    console.log('Workers initialized successfully.')
 
-    await addJobToQueue('msg-mailer', { type: 'haha' });
-    console.log('Job added to queue successfully.');
+    await addJobToQueue('msg-mailer', { type: 'haha' })
+    console.log('Job added to queue successfully.')
 
     await initializeScheduledJobs()
 
     await setupBullBoard(appConfig)
 
     await mailerSetup()
-  }
-  catch (err) {
+  } catch (err) {
     console.error('\n\tError during strting:', err.message)
     process.exit(1)
   }

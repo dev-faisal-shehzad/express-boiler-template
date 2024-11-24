@@ -24,31 +24,22 @@ export const initializeBullMQQueues = () => {
         limiter: queue.limiter,
         defaultJobOptions: queue.defaultJobOptions
       })
-      console.log(`Queue initialized: ${queue.queueName}`);
+      console.log(`Queue initialized: ${queue.queueName}`)
     } catch (error) {
-      console.error('Error during queue initialization : ', error.message, error.stack);
+      console.error('Error during queue initialization : ', error.message, error.stack)
     }
 
     if (queue.scheduler) {
       try {
         new JobScheduler(queue.queueName, { connection: redisConfig })
-      }
-      catch (error) {
-        console.error('Error during scheduler initialization : ', error.message, error.stack);
+      } catch (error) {
+        console.error('Error during scheduler initialization : ', error.message, error.stack)
       }
     }
   })
-
-  
 }
 
-export const addJobToQueue = async (
-  jobName,
-  jobData,
-  cronExpression = null,
-  jobOptions = {},
-  queueName = 'defaultQueue'
-) => {
+export const addJobToQueue = async (jobName, jobData, cronExpression = null, jobOptions = {}, queueName = 'defaultQueue') => {
   if (!bullMQQueues[queueName]) {
     throw new Error(`Queue "${queueName}" is not initialized`)
   }
@@ -62,7 +53,7 @@ export const addJobToQueue = async (
   try {
     await bullMQQueue.add(jobName, jobData, finalOptions)
   } catch (error) {
-    console.error('Error during job enqueuing :', error.message, error.stack);
+    console.error('Error during job enqueuing :', error.message, error.stack)
   }
 }
 

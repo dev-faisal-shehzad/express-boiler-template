@@ -5,7 +5,7 @@ const initializeWorkers = () => {
   workers.forEach((worker) => {
     try {
       const activeWorker = new Worker(worker.queueName, worker.processor, worker.configuration)
-  
+
       activeWorker.on('completed', (job) => {
         console.log(`Job ${job.id} completed successfully.`)
       })
@@ -23,7 +23,7 @@ const initializeWorkers = () => {
         console.error('Uncaught Exception:', err)
       })
     } catch (error) {
-      console.error('Error during worker initialization :', error.message, error.stack);
+      console.error('Error during worker initialization :', error.message, error.stack)
     }
   })
 }

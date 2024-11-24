@@ -21,13 +21,11 @@ appConfig.use(express.json({ limit: '16kb' }))
 appConfig.use(express.urlencoded({ extended: true, limit: '16kb' }))
 appConfig.use(cookieParser())
 
-
 // template engine and layout configuration
 // appConfig.set("view engine", "ejs")
 // appConfig.set("views", appFilePath("views"))
 // appConfig.use(expressLayouts)
 // appConfig.set("layout", "layouts/main.layout.ejs")
-
 
 // static assets configuration
 // appConfig.use("/public", express.static(publicFilePath("/")))
