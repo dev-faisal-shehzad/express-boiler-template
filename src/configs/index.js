@@ -5,6 +5,7 @@ import mailerSetup from './mailerConfig.js'
 import initializeWorkers from './workerConfig.js'
 import setupBullBoard from './bullBoardConfig.js'
 import { initializeBullMQQueues, addJobToQueue, initializeScheduledJobs } from './bullMQConfig.js'
+import i18next from './i18nextConfig.js'
 
 export {
   redisConfiq,
@@ -15,5 +16,6 @@ export {
   addJobToQueue,
   initializeScheduledJobs,
   setupBullBoard,
-  initializeBullMQQueues
+  initializeBullMQQueues,
+  i18next
 }
