@@ -1,0 +1,6 @@
+Hello, <%= name %>!
+
+Thank you for signing up for our service. We're excited to have you on board.
+
+Best regards,
+The My Awesome App Team
