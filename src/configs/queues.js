@@ -1,5 +1,5 @@
 const defaultJobOptions = {
-  attempts: 5, // Retry up to 5 times if a job fails
+  attempts: 0, // Retry up to 5 times if a job fails
   priority: 1,
   backoff: 5000, // Wait 5 seconds between retries
   removeOnComplete: {

@@ -18,7 +18,7 @@ const workers = [
   },
   {
     queueName: 'mailertQueue',
-    processor: path.resolve('./src/workers/index.js'),
+    processor: path.resolve('./src/workers/mailerWorker.js'),
     configuration: defaultWorkerOptions
   }
 ]
