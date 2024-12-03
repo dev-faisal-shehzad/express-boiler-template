@@ -1,0 +1,4 @@
+{
+    "helloWorld": "hello world",
+    "language": "The current language is {{lng}}."
+}

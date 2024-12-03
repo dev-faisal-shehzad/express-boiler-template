@@ -14,7 +14,7 @@ import {
   initializeScheduledJobs,
   setupBullBoard
 } from './configs/index.js'
-import { addJobToQueue } from './configs/index.js'
+import { User } from './models/index.js'
 
 const startServer = async (port) => {
   try {
@@ -27,14 +27,14 @@ const startServer = async (port) => {
     await initializeWorkers()
     console.log('Workers initialized successfully.')
 
-    await addJobToQueue('msg-mailer', { type: 'haha' })
-    console.log('Job added to queue successfully.')
-
     await initializeScheduledJobs()
 
     await setupBullBoard(appConfig)
 
     await mailerSetup()
+
+    global.job.runLater('defaultQueue', 'defaultWorker', 'Server Start', {})
+
   } catch (err) {
     console.error('\n\tError during strting:', err.message)
     process.exit(1)

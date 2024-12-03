@@ -4,7 +4,8 @@ import corsConfig from './corsConfig.js'
 import mailerSetup from './mailerConfig.js'
 import initializeWorkers from './workerConfig.js'
 import setupBullBoard from './bullBoardConfig.js'
-import { initializeBullMQQueues, addJobToQueue, initializeScheduledJobs } from './bullMQConfig.js'
+import { initializeBullMQQueues, initializeScheduledJobs, jobMethods } from './bullMQConfig.js'
+import i18next from './i18nConfig.js'
 
 export {
   redisConfiq,
@@ -12,8 +13,9 @@ export {
   corsConfig,
   mailerSetup,
   initializeWorkers,
-  addJobToQueue,
   initializeScheduledJobs,
   setupBullBoard,
-  initializeBullMQQueues
+  initializeBullMQQueues,
+  i18next,
+  jobMethods
 }

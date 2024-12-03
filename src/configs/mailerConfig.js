@@ -5,7 +5,7 @@ dotenv.config({
   path: './.env'
 })
 
-const mailer = nodemailer.createTransport({
+export const mailer = nodemailer.createTransport({
   host: process.env.MAILER_HOST,
   port: parseInt(process.env.MAILER_PORT, 10),
   secure: false,

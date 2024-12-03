@@ -1,13 +1,25 @@
-export default async (job) => {
-  const workerName = job.name.split('-')[1]
+import sendEmail from '../configs/templateConfig.js'
+import { MongoDBBackupService } from '../services/index.js'
+import { mongoConfig } from '../configs/index.js'
 
-  console.log(s)
-  // console.log(`\t${job.id}`)
-  // console.log(`\t${job.name}`)
-  // console.log(`\n\n\n\t\t------- ${JSON.stringify(job.data, null, 1)} -------\n`);
-  // if (workerName === 'mailer') {
-  //   // mailerWorker(job)
-  //   console.log('yo')
-  // }
-  return false
+export default async (job) => {
+  try {
+    await mongoConfig()
+  
+    const jobName = job.name.split('-')[0]
+  
+    if(jobName === 'Server Start'){
+      await sendEmail(process.env.ADMIN_MAIL, 'Server Start', {}, 'reports/server_start.html')
+    }
+    else if (jobName === 'MongoDB Backup'){
+      const backupService = new MongoDBBackupService()
+      await backupService.backupDatabase()
+    }
+  
+    return true
+  }
+  catch (err) {
+    console.error('Error processing job:', err.message)
+    return false
+  }
 }

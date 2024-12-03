@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 1rem 0;
+        }
+        main {
+            padding: 2rem;
+        }
+        a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            padding: 1rem 0;
+            background-color: #f4f4f4;
+        }
+    </style>
+    <title>Email Verification</title>
+</head>
+<body>
+    <header>
+        <h1>Welcome to <%= process.env.APP_NAME %></h1>
+    </header>
+    <main>
+        <p>Hello, <%= user.fullName() %></p>
+        <p>Thank you for signing up for our service. To complete your registration, please verify your email address by clicking the link below:</p>
+        <p>
+            <a href="<%= token %>" target="_blank">Verify Your Email</a>
+        </p>
+        <p>If the link above doesn’t work, copy and paste the following URL into your browser:</p>
+        <p><%= token %></p>
+        <p>Best regards,<br><%= process.env.APP_NAME %> Team</p>
+    </main>
+    <footer>
+        <p>&copy; 2024  <%= process.env.APP_NAME %>! All rights reserved.</p>
+    </footer>
+</body>
+</html>
