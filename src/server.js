@@ -33,30 +33,32 @@ const startServer = async (port) => {
 
     await mailerSetup()
 
-    const createUser = async () => {
-      await User.deleteMany({})
-    
-      const newUser = new User({
-          firstName: 'Jane',
-          lastName: 'Doe',
-          email: 'shehzadf83@gmail.com',
-          password: 'Password123!',
-          gender: 'Female'
-      })
-      await newUser.save() 
+    // global.job.runAt('mailertQueue', 'mailerWorker', 'runAt', { name: 'testRunAt'}, new Date(Date.now() + 10 * 60 * 1000))
 
-      const newInviteUser = new User({
-        firstName: 'Jane',
-        lastName: 'Doe',
-        email: 'shehzadf831@gmail.com',
-        password: 'Password123!',
-        gender: 'Female',
-        invitedBy: newUser._id,
-      })
-      await newInviteUser.save() 
-  }
+  //   const createUser = async () => {
+  //     await User.deleteMany({})
+    
+  //     const newUser = new User({
+  //         firstName: 'Jane',
+  //         lastName: 'Doe',
+  //         email: 'shehzadf83@gmail.com',
+  //         password: 'Password123!',
+  //         gender: 'Female'
+  //     })
+  //     await newUser.save() 
+
+  //     const newInviteUser = new User({
+  //       firstName: 'Jane',
+  //       lastName: 'Doe',
+  //       email: 'shehzadf831@gmail.com',
+  //       password: 'Password123!',
+  //       gender: 'Female',
+  //       invitedBy: newUser._id,
+  //     })
+  //     await newInviteUser.save() 
+  // }
   
-    // await createUser()
+  //   await createUser()
 
 
   } catch (err) {
