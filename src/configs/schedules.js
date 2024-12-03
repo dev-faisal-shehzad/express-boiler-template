@@ -4,8 +4,8 @@ const schedules = [
     jobName: 'MongoDB Backup',
     workerName: 'defaultWorker',
     jobData: {},
-    cronExpression: '59 23 * * *',
-    time: 'Repeat at 11:59 PM every day'
+    cronExpression: '0 23 * * *',
+    time: 'Repeat at 11:00 PM every day'
   }
 ]
 
