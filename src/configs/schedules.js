@@ -1,10 +1,11 @@
 const schedules = [
   {
-    queueName: 'mailertQueue',
-    jobName: 'welcome',
-    workerName: 'mailerWorker',
-    jobData: { reportType: 'welcome' },
-    cronExpression: '*/3 * * * *', // repeat after every minute 
+    queueName: 'defaultQueue',
+    jobName: 'MongoDB Backup',
+    workerName: 'defaultWorker',
+    jobData: {},
+    cronExpression: '59 23 * * *',
+    time: 'Repeat at 11:59 PM every day'
   }
 ]
 
