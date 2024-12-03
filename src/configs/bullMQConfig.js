@@ -6,9 +6,9 @@ import redisConfig from './redisConfig.js'
 export const bullMQQueues = {}
 
 const defaultJobOptions = {
-  attempts: 5,
+  attempts: 0,
   priority: 1,
-  backoff: 5000,
+  backoff: 9000,
   removeOnComplete: {
     age: 3600,
     count: 1000
@@ -38,6 +38,32 @@ export const initializeBullMQQueues = () => {
     }
   })
 }
+
+const runNow = async (queueName, WorkerName, jobName, jobData) => {
+  if (!bullMQQueues[queueName]) throw new Error(`Queue "${queueName}" is not initialized.`)
+
+  await addJobToQueue(`${jobName}-${WorkerName}`, jobData, null, {}, queueName)
+}
+
+const runLater = async (queueName, WorkerName, jobName, jobData) => {
+  if (!bullMQQueues[queueName]) throw new Error(`Queue "${queueName}" is not initialized.`)
+
+  await addJobToQueue(`${jobName}-${WorkerName}`, jobData, null, { delay: 100000  }, queueName)
+}
+
+const runAt = async (queueName, WorkerName, jobName, jobData, dateTime) => {
+  if (!bullMQQueues[queueName]) throw new Error(`Queue "${queueName}" is not initialized.`)
+
+    const delay = new Date(dateTime).getTime() - Date.now()
+    if (delay < 0) {
+      throw new Error('Specified time is in the past.')
+    }
+
+  await addJobToQueue(`${jobName}-${WorkerName}`, jobData, null, { delay: delay  }, queueName)
+}
+
+
+export const jobMethods = { runNow, runLater, runAt }
 
 export const addJobToQueue = async (jobName, jobData, cronExpression = null, jobOptions = {}, queueName = 'defaultQueue') => {
   if (!bullMQQueues[queueName]) {

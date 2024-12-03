@@ -12,7 +12,7 @@ const getImageAsBase64 = (imageName) => {
 }
 
 const renderHtmlTemplate = (templateName, data) => {
-    const templatePath = path.join(__dirname, '../templates/mailers', `${templateName}.html`)
+    const templatePath = path.join(__dirname, '../templates/', `${templateName}`)
     const templateContent = fs.readFileSync(templatePath, 'utf-8')
 
     return ejs.render(templateContent, data)
