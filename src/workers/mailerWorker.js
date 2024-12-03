@@ -22,6 +22,12 @@ export default async (job) => {
     const token = `${process.env.APP_BASE_URL}/api/v1/auth/invitation?token=${user.invitationToken}`
     await sendEmail(user.email, 'Invitation', { user: user, token: token}, 'auth/invitation.html')
    }
+   else if(jobName == 'ForgotPassword') {
+    const user = await User.findById(job.data.userId)
+    if (!user) return true
+    const token = `${process.env.APP_BASE_URL}/api/v1/auth/verification?token=${user.verificationToken}`
+    await sendEmail(user.email, 'Forgot Password', { user: user, token: token}, 'auth/forgot_password.html')
+   }
 
   return true
 }

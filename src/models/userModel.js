@@ -1,6 +1,5 @@
 import mongoose from 'mongoose'
 import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
 import crypto from 'crypto'
 import { v4 as uuidv4, validate } from 'uuid'
 
@@ -9,7 +8,7 @@ const passwordMessage = "Password must have at least 8 characters, including an 
 const emailValidator = function(v) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) }
 
 const userSchema = new mongoose.Schema({
-    uuid: { type: String, unique: true, default: uuidv4, validate: validate },
+    uuid: { type: String, unique: true, default: uuidv4, required: true, validate: validate },
     firstName: { type: String, required: true, minlength: 3, maxlength: 50, trim: true },
     lastName: { type: String, required: true, minlength: 3, maxlength: 50, trim: true },
     gender: { type: String,  enum: ['Male', 'Female', 'Mixed'],  required: true },
@@ -41,6 +40,7 @@ userSchema.virtual('skipSoftDelete').get(function() {
 
 userSchema.pre('save', async function(next) {
     try {
+        if(!this.password) this.password = process.env.DEFAULT_PASSWORD
         if (this.isModified('password')) this.password = await bcrypt.hash(this.password, 10)
         if (this.isNew && this.invitedBy) this.generateInvitationToken()
         if (this.isNew && this.invitedBy == null) this.generateVerificationToken()
@@ -70,13 +70,7 @@ userSchema.pre('deleteOne', { document: true, query: false }, async function(nex
     next()
 })
 
-userSchema.methods.comparePassword = async function(password) {
-    return await bcrypt.compare(password, this.password)
-}
-
-userSchema.methods.generateAuthToken = function() {
-    return jwt.sign({ userId: this._id }, process.env.JWT_SECRET, { expiresIn: '1h' })
-}
+userSchema.methods.comparePassword = async function(password) { return await bcrypt.compare(password, this.password) }
 
 userSchema.methods.generateVerificationToken = function() {
     this.verificationToken = crypto.randomBytes(32).toString('hex')
@@ -91,6 +85,19 @@ userSchema.methods.generateInvitationToken = function() {
 userSchema.methods.fullName = function() {
     const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1).toLowerCase()
     return `${capitalize(this.firstName)} ${capitalize(this.lastName)}`
+}
+
+userSchema.methods.activateUser = async function(active = true) {
+    try {
+        this.isActive = active
+        this.verificationToken = null
+        this.verificationTokenExpiration = null
+        this.invitationToken = null
+        this.invitationExpiration = null
+        await this.save()
+    } catch (error) {
+        throw new Error('Error activating user and clearing tokens')
+    }
 }
 
 

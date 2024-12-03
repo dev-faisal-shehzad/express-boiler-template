@@ -56,7 +56,7 @@ const startServer = async (port) => {
       await newInviteUser.save() 
   }
   
-    await createUser()
+    // await createUser()
 
 
   } catch (err) {
